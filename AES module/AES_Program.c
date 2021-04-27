@@ -1,6 +1,6 @@
 /***********************************************************/
 /**********Author: osama hegazi*****************************/
-/**********Date:24/1/2021***********************************/
+/**********Date:27/4/2021***********************************/
 /***********version:1***************************************/
 /***********************************************************/
 #include "STD_TYPES.h"
@@ -8,7 +8,6 @@
 #include "AES_Private.h"
 #include "AES_Interface.h"
 #include "AES_Config.h"
-
 
 /*************************************************************************************/
                              /*****Functions Definitions********/
@@ -320,4 +319,64 @@ void AES_VoidDecrypt_16Bytes(const u8 *Copy_u8roundkeys, const u8 *Copy_u8cipher
     }
 
 }
+/*****************************************************************END OF FUNCTION**************************************************************************************************************************************************************************************************************************/																                                  
+void AES_VoidDecrypt_64Byte ( const u8 *Copy_u8roundkeys , const u8 *Copy_u8CipherText_64Byte , const u8 *Copy_u8PlainText_64Byte)
+{
+
+	u8 *Local_u8CipherTextPtr = Copy_u8CipherText_64Byte ;
+	u8 *Local_u8PlainTextPtr  = Copy_u8PlainText_64Byte  ;
+
+	 for (u8 Round_Counter = 0; Round_Counter < FOUR_ROUNDS ; Round_Counter++) // fetch 16 byte == one record and fill message1 array
+    {
+	 
+ 	          AES_VoidDecrypt_16Bytes ( Copy_u8roundkeys  , Local_u8CipherTextPtr  , Local_u8PlainTextPtr) ; //get 16 byte of plain text
+	          Local_u8CipherTextPtr += FOUR_WORDS ;
+	          Local_u8PlainTextPtr  += FOUR_WORDS ;	
+    }
+ }
+/*****************************************************************END OF FUNCTION**************************************************************************************************************************************************************************************************************************/																                                  
+void AES_VoidEncrypt_64Byte ( const u8 *Copy_u8roundkeys , const u8 *Copy_u8PlainText_64Byte , const u8 *Copy_u8CipherText_64Byte)
+{
+
+	u8 *Local_u8PlainTextPtr   = Copy_u8PlainText_64Byte ;
+	u8 *Local_u8CipherTextPtr  = Copy_u8CipherText_64Byte  ;
+
+	 for (u8 Round_Counter = 0; Round_Counter < FOUR_ROUNDS ; Round_Counter++) // fetch 16 byte == one record and fill message1 array
+    {
+	 
+ 	          AES_VoidEncrypt_16Bytes ( Copy_u8roundkeys  , Local_u8PlainTextPtr  , Local_u8CipherTextPtr) ; //get 16 byte of plain text
+	          Local_u8CipherTextPtr += FOUR_WORDS ;
+	          Local_u8PlainTextPtr  += FOUR_WORDS ;
+	
+   }
+}
+/*****************************************************************END OF FUNCTION**************************************************************************************************************************************************************************************************************************/																                                  
+
+/*
+void AES_VoidDecrypt_64Bytes (u8 *CipherText)
+{
+
+u32  Local_u32SizeAddress = Image->EncImage_SizeAddress ;
+	
+u32  Local_u32Size = *((volatile uint32*)Local_u32SizeAddress)  ;	
+
+u32  Local_u32FirstAddress = Image->EncImage_FirstAddress ;
+	
+for ( u16 Record_Counter = 0 ;  Record_Counter < Local_u32Size ; Record_Counter ++  )
+{	
+
+	     for (u8 Data_Counter = 0; Data_Counter < 16; Data_Counter++) // fetch 16 byte == one record and fill message1 array
+{
+	
+         	  CipherText[Data_Counter] = *((volatile uint8*)Local_u32FirstAddress) ; //Load the Data
+
+		        Local_u32FirstAddress += 1 ; //step address by 1	
+}
+	
+	
+}
+
+}*/
+
+
 /*****************************************************************END OF FUNCTION**************************************************************************************************************************************************************************************************************************/																                                  

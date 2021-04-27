@@ -1,7 +1,7 @@
 /***********************************************************/
 /**********Author: osama hegazi*****************************/
-/**********Date:24/1/2021***********************************/
-/***********version:1***************************************/
+/**********Date:27/4/2021***********************************/
+/***********version:2***************************************/
 /***********************************************************/
 #ifndef AES_INTERFACE_H
 #define AES_INTERFACE_H
@@ -9,10 +9,11 @@
 /***********************************************************************************************************************************************************************************************************************************************************
                                               *******Common Macros******
 ***********************************************************************************************************************************************************************************************************************************************************/																			
-#define  ONE       1
-#define  ZERO      0
-#define  ONE_WORD  4
-
+#define  ONE          1
+#define  ZERO         0
+#define  ONE_WORD     4
+#define  FOUR_ROUNDS  4
+#define  FOUR_WORDS   16
 
 enum ARRAY_INDEX
 {
@@ -94,115 +95,41 @@ void AES_VoidEncrypt_16Bytes(const u8 *Copy_u8roundkeys, const u8 *Copy_u8plaint
 void AES_VoidDecrypt_16Bytes(const u8 *Copy_u8roundkeys, const u8 *Copy_u8ciphertext, u8 *Copy_u8plaintext) ;
 /************************************************************************************
 
-*Name       :   AES_U8GetMul2
+*Name       :   AES_VoidEncrypt_64Byte
 
-*Description: * Function to mul 2 of input
-              
+*Description: * Function to dencrypt 4 blocks(64 bytes) using key Rounds               
 							
-*Pre-Cond   :	None				
-							
-*pos-Cond   : None
-
-*Input      : num
-
-*Output     : void
-
-*Return     : mul by 2 of input number
-
-****************************************************************************************/
-static u8 AES_U8GetMul2(u8 Copy_u8number ) ; 
-/************************************************************************************
-
-*Name       :   AES_voidMixColoums
-
-*Description: * Function to perform mix Coloums of the array to incrupt
-              * MixColumns 
-              * [02 03 01 01]   [s0  s4  s8  s12]
-              * [01 02 03 01] . [s1  s5  s9  s13]
-              * [01 01 02 03]   [s2  s6  s10 s14]
-              * [03 01 01 02]   [s3  s7  s11 s15]            
-							
-*Pre-Cond   :	sub bytes step is performed				
+*Pre-Cond   :	Roundkeys is get 				
 							
 *pos-Cond   : None
 
-*Input      : cipher text and temp array after sumbytes step
+*Input      : array(64 bytes) of cipher text and 176 bytes of roundskeys
 
-*Output     : void
+*Output     : one array(64bytes) of plain text
 
 *Return     : void
 
 ****************************************************************************************/
-static void AES_voidMixColoums( u8 *Copy_u8ciphertext, u8 *Copy_u8tmptext);
+void AES_VoidEncrypt_64Byte ( const u8 *Copy_u8roundkeys , const u8 *PlainText_64Byte , const u8 *CipherText_64Byte);
 /************************************************************************************
 
-*Name       :   AES_voidInvMixColoums
+*Name       :   Aes_VoidDecrypt_4Bytes
 
-*Description: * Function to perform inv mix Coloums of the array to decrypt              
-              * Inverse MixColumns
-              * [0e 0b 0d 09]   [s0  s4  s8  s12]
-              * [09 0e 0b 0d] . [s1  s5  s9  s13]
-              * [0d 09 0e 0b]   [s2  s6  s10 s14]
-              * [0b 0d 09 0e]   [s3  s7  s11 s15]
-      
-*Pre-Cond   :	sub bytes step is performed				
+*Description: * Function to decrypt 4 blocks(64 bytes) using key Rounds               
+							
+*Pre-Cond   :	Roundkeys is get 				
 							
 *pos-Cond   : None
 
-*Input      : plain text and temp array after sum bytes step
+*Input      : array (64 bytes) of cipher text and 176 bytes of roundskeys
 
-*Output     : void
+*Output     : array(64bytes) of plain text
 
-*Return     : void 
-
-****************************************************************************************/
-static void AES_voidInvMixColoums( u8 *Copy_u8plaintext, u8 *Copy_u8tmptext);
-/************************************************************************************
-
-*Name       :   AES_voidShiftRows
-
-*Description: * Function to perform shif rows of the array to incrypt              
-              * Shift Rows
-              *  Row0: s0  s4  s8  s12   <<< 0 byte
-              *  Row1: s1  s5  s9  s13   <<< 1 byte
-              *  Row2: s2  s6  s10 s14   <<< 2 bytes
-              *  Row3: s3  s7  s11 s15   <<< 3 bytes
-      
-*Pre-Cond   :	None				
-							
-*pos-Cond   : None
-
-*Input      : state array to shift rows
-
-*Output     : void
-
-*Return     : void 
+*Return     : void
 
 ****************************************************************************************/
-static void AES_voidShiftRows(u8 *Copy_u8state) ;
-/************************************************************************************
+void AES_VoidDecrypt_64Byte ( const u8 *Copy_u8roundkeys , const u8 *CipherText_64Byte , const u8 *PlainText_64Byte);
 
-*Name       :   AES_voidInvShiftRows
-
-*Description: * Function to perform inv shif rows of the array to decrupt              
-              * inv Shift Rows
-              *  Row0: s0  s4  s8  s12   >>> 0 byte
-              *  Row1: s1  s5  s9  s13   >>> 1 byte
-              *  Row2: s2  s6  s10 s14   >>> 2 bytes
-              *  Row3: s3  s7  s11 s15   >>> 3 bytes
-      
-*Pre-Cond   :	None				
-							
-*pos-Cond   : None
-
-*Input      : state array to inv shift rows
-
-*Output     : void
-
-*Return     : void 
-
-****************************************************************************************/
-static void AES_voidInvShiftRows(u8 *Copy_u8state);
 
 
 
